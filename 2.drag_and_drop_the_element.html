@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    body {
+        width: 100vw;
+        height: 100vh;
+    }
+
+    .drag {
+        width: 50px;
+        height: 50px;
+        position: absolute;
+        background: #6a198a;
+        border-radius: 50%;
+    }
+</style>
+
+<body>
+    <div class="drag"></div>
+</body>
+<script>
+    //拖拽方块
+    var dragBox = document.querySelector(".drag")
+    //方块原始坐标
+    var X = dragBox.clientX
+    var Y = dragBox.clientY
+
+    //拖拽目标绑定鼠标按下事件
+    dragBox.addEventListener("mousedown", (e) => {
+        //鼠标按下后为拖拽目标的父标签(或拖拽范围)绑定鼠标移动事件，这样就知道鼠标移到哪里
+        document.getElementsByTagName("body")[0].addEventListener("mousemove", dragMove)
+    })
+
+    //鼠标移动时做的事
+    const dragMove = (e) => {
+        // if(X.clientX - 25 == 0 || Y.clientY - 25 == 0) {document.getElementsByTagName("body")[0].removeEventListener("mousemove", dragMove)}
+            //减去darg宽高一半可鼠标居中
+            //鼠标按下时/鼠标移动时，获取鼠标位置
+            X = e.clientX - 25
+            Y = e.clientY - 25
+            //把拖拽目标的定位改到鼠标所在位置
+            dragBox.style.top = `${Y}px`;
+            dragBox.style.left = `${X}px`;
+    }
+    //为拖拽目标的父标签(或拖拽范围)绑定鼠标松开事件  
+    document.getElementsByTagName("body")[0].addEventListener("mouseup", (e) => {
+        //清除鼠标移动事件，这样鼠标松开后拖拽目标停止运动
+        document.getElementsByTagName("body")[0].removeEventListener("mousemove", dragMove)
+    })
+</script>
+
+</html>
