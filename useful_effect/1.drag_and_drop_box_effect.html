@@ -8,17 +8,17 @@
     <title>Document</title>
 </head>
 <style>
-
-    .container{
+    .container {
         display: flex;
         justify-content: space-around;
         width: 400px;
         height: 300px;
-        margin: 0 auto;
+        margin: 50px auto;
         background-color: #76afc8;
         position: relative;
     }
-    .line{
+
+    .line {
         width: 1px;
         height: 300px;
         position: absolute;
@@ -27,24 +27,95 @@
         transform: translateX(-50%);
         background-color: #adc3f7;
     }
+
+    .opt {
+        margin: 10px auto;
+        width: 100px;
+        line-height: 50px;
+        background-color: aquamarine;
+    }
+
+    .left,
+    .right {
+        text-align: center;
+        width: 150px;
+        border: 1px solid blue;
+        transition: scale .5s ease-in;
+    }
+
+    .dragObj {
+        background-color: darkgreen;
+    }
 </style>
 
 <body>
     <div class="container">
         <div class="left">
-            <div class="opt">1</div>
-            <div class="opt">2</div>
+            <div draggable="true" class="opt">1</div>
+            <div draggable="true" class="opt">2</div>
+            <div draggable="true" class="opt">3</div>
         </div>
         <div class="line"></div>
         <div class="right">
-            <div class="opt">1</div>
-            <div class="opt">2</div>
+            <div draggable="true" class="opt">1</div>
+            <div draggable="true" class="opt">2</div>
         </div>
     </div>
 </body>
 
 <script>
+    //定义一个当前拖动的对象
+    let dragCurrent = null
+    //所有拖拽对象
+    const dragObj = document.querySelectorAll(".opt")
+    //左框
+    const dragBox_left = document.querySelector(".left")
+    //右框
+    const dragBox_right = document.querySelector(".right")
+    //给所有可能被拖拽的对象添加拖拽事件，
+    for (let i = 0; i < dragObj.length; i++) {
+        dragObj[i].addEventListener("drag", (e) => {
+            dragBox_left.style.border = "1px #084e6c dashed";
+            dragBox_right.style.border = "1px #084e6c dashed";
+            dragCurrent = e.target
+        })
+        dragObj[i].addEventListener("dragend", () => {
+            dragBox_left.style.border = "";
+            dragBox_right.style.border = "";
+            dragCurrent = null
+        })
 
+    }
+
+
+    dragBox_left.addEventListener("dragover", (e) => {
+        dragBox_left.style.scale = 1.1;
+        dragBox_right.style.scale = 1.0;
+        //默认不允许放置，阻止默认行为，不写无法放置
+        e.preventDefault();
+    })
+    dragBox_left.addEventListener("drop", () => {
+
+        if (dragCurrent.parentNode.className === 'left') return
+        dragBox_right.removeChild(dragCurrent)
+        dragBox_left.appendChild(dragCurrent)
+    })
+    dragBox_right.addEventListener("dragover", (e) => {
+        dragBox_right.style.scale = 1.1;
+        dragBox_left.style.scale = 1.0;
+        //默认不允许放置，阻止默认行为，不写无法放置
+        e.preventDefault();
+    })
+    dragBox_right.addEventListener("drop", () => {
+
+        if (dragCurrent.parentNode.className === 'right') return
+
+        dragBox_left.removeChild(dragCurrent)
+        dragBox_right.appendChild(dragCurrent)
+    })
+    // dragBox_right.addEventListener("dragleave", (e)=>{
+    //     dragBox_right.style.scale = 1.0 ;
+    // })
 </script>
 
 </html>

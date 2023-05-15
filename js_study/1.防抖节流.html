@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>防抖节流</title>
+</head>
+
+<body>
+    <h1>防抖节流:防抖就是回城，节流就是放技能</h1>
+    <div class="fd">
+        <b>1.防抖</b>
+        <pre>
+            <code>
+                    var searchTips = null
+                    const fd = () => {
+                        if (searchTips !== null) {
+                            clearTimeout(searchTips)
+                        }
+                        searchTips = setTimeout(() => {
+                            console.log("search了")
+                        }, 5000)
+                    }
+            </code>
+        </pre>
+        <br>
+        <i>防抖指事件短时间内频发时只触发最后一次
+            <br>
+            <br>
+            <i>应用场景：
+                <br>
+                1.搜索框搜索输入,只需用户最后一次输入完,再发送请求
+                <br>
+                2.手机号、邮箱验证输入检测
+                <br>
+                3.窗口大小resize,只需窗口调整完成后,计算窗口大小,防止重复渲染。
+                <br>
+                4.在线文档自动保存
+            </i>
+            <br>
+            <br>
+            比如：search时tips，你不能每次输入一个字时就触发，
+            这样性开销太大，所以你可以通过settimeout()来设置一个时间限制，
+            如果在这个时间限制内，则前面的触发给它取消掉。
+        </i>
+        <br>
+        <input onkeyup="fd()">
+        <br>
+        <i id="console_fd"></i>
+    </div>
+    <div class="jl">
+        <b>2.节流</b>
+        <pre>
+            <code>
+                    var doing = false
+                    const jl = () => {
+                        if (doing !== false) return
+                        setTimeout(() => {
+                            doing = false
+                            console.log("doing")
+                        }, 1000)
+                        doing = true
+                    }
+            </code>
+        </pre>
+        <br>
+        <i>节流指事件短时间内频发时只触发一次,有时间或者其他限制条件
+            <br>
+            <i>应用场景：搜索框、在线文档自动保存、需要监测鼠标移动但不需要太过频繁</i>
+            <br>
+            比如：search时tips，你不能每次输入一个字时就触发，
+            这样性开销太大，所以你可以通过settimeout()来设置一个时间限制，
+            如果在这个时间限制内，则前面的触发给它取消掉。
+        </i>
+        <br>
+        <input onkeyup="jl()">
+        <br>
+        <i id="console_jl"></i>
+    </div>
+
+    <script>
+        var searchTips = null
+        const fd = () => {
+            if (searchTips !== null) {
+                clearTimeout(searchTips)
+            }
+            searchTips = setTimeout(() => {
+                console.log("search了")
+            }, 1000)
+        }
+
+
+        var doing = false
+        const jl = () => {
+            if (doing !== false) return
+            setTimeout(() => {
+                doing = false
+                console.log("doing")
+            }, 1000)
+            doing = true
+        }
+    </script>
+</body>
+
+</html>
